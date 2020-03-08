@@ -1,0 +1,4 @@
+*.pyc
+*.qmlc
+.vscode
+config.txt
