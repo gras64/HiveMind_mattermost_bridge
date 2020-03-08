@@ -1,5 +1,5 @@
 from mattermost_bridge.mmost import MMostBot
-from mattermost_bridge.mycroft import MycroftConnector
+from mattermost_bridge.rasa import RasaConnector
 import requests
 import subprocess
 import threading
@@ -47,12 +47,12 @@ class EchoBot(MMostBot):
         message = "@" + sender + " " + message
         self.send_message(channel_id, message)
 
-class mycroftrasa(MycroftConnector):
+class Rasa(RasaConnector):
     def send_msg(self, msg):
         rpaid = msg[0]
         message = msg[1]
-        mycroft = MycroftConnector(ruser, rpswd, rhost, rport, rpaid, debug=False)
-        mycroft.talk_to_rasa(message)
+        rasa = RasaConnector(ruser, rpswd, rhost, rport, rpaid, debug=False)
+        rasa.talk_to_rasa(message)
         print(" message send")
 
 print("init echobot_threaded")
@@ -62,7 +62,7 @@ threadbot.start()
 threadbot.join
 message = [rpaid, msg, channel_name]
 print("start echobot_threaded")
-rasa = mycroftrasa(ruser, rpswd, rhost, rport, rpaid)
+rasa = Rasa(ruser, rpswd, rhost, rport, rpaid)
 rasa.send_msg(message)
 
 print("after")

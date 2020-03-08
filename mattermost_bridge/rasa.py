@@ -10,7 +10,7 @@ class ButtonValidator:
         return best[1] > self.threshold
 
 
-class MycroftConnector:
+class RasaConnector:
     button_match_threshold = 0.6
     button_attempts_max = 3
 
