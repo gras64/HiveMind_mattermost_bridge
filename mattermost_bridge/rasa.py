@@ -37,18 +37,15 @@ class RasaConnector:
         #response = self.get_response("connecting.to.rasa")
         response = (msg)
         print("connecting.to.rasa")
-        self.conversation_active = True
-        while response is not None and self.conversation_active:
-            messages = self.get_rasa_response(response)
-            if len(messages) > 1:
-                for rasa_message in messages[:-1]:
-                    print(rasa_message)
-            if len(messages) == 0:
-                messages = ["no response from rasa"]
-            response = self.handle_final_output(messages[-1])
-
+        messages = self.get_rasa_response(response)
+        if len(messages) > 1:
+            for rasa_message in messages[:-1]:
+                print(rasa_message)
+        if len(messages) == 0:
+            return None
+        response = self.handle_final_output(messages[-1])
+        return response
         print("disconnecting from rasa")
-        return messages
 
     def handle_final_output(self, message, attempts=0):
         if attempts > self.button_attempts_max:
@@ -100,7 +97,7 @@ class RasaConnector:
                 return response
             return self.handle_final_output(message, attempts=attempts + 1)
         # if we don't have buttons, just get_response
-        return #self.get_response(message["text"], num_retries=0)
+        return message
 
     def on_failed_button(self, utt):
         return "Sorry I didn't catch that."
@@ -134,5 +131,5 @@ class RasaConnector:
                 self.action_endpoint, json={"name": action}
             ).json()
             outputs += [m for m in run_action["messages"]]
-        print("sending"+str(outputs))
+        print("response output: "+str(outputs))
         return outputs

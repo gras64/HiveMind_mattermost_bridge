@@ -1,6 +1,6 @@
 from mattermostdriver import Driver
 from jarbas_utils.log import LOG
-#from echobot import mycroft
+#from rasa import RasaConnector
 import logging
 import json
 
