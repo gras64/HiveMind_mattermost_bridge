@@ -1,4 +1,4 @@
 *.pyc
 *.qmlc
 .vscode
-config.txt
+config.json

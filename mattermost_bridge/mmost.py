@@ -12,7 +12,7 @@ logging.getLogger("websockets.protocol").setLevel("WARNING")
 
 
 class MMostBot:
-    def __init__(self, mail, pswd, url, tags=None, debug=False):
+    def __init__(self, mail, pswd, url, welcome="hello", tags=None, debug=False):
         self.debug = debug
         self.config = {"url": url,
                        "login_id": mail,
@@ -20,7 +20,9 @@ class MMostBot:
                        "scheme": "https",
                        "port": 443,
                        "verify": True,
-                       "debug": debug}
+                       "debug": debug,
+                       "welcome": welcome
+                       }
         self.driver = Driver(self.config)
         self.tags = tags or []
 
@@ -97,7 +99,7 @@ class MMostBot:
         channel_data = self.driver.channels.get_channel(channel_id)
         channel_name = channel_data["name"]
 
-        if channel_name == self.user_id + "__" + user_id:
+        if channel_name == user_id + "__" + self.user_id:
             # direct_message
             if user_id != self.user_id:
                 self.on_direct_message(event)
@@ -142,7 +144,7 @@ class MMostBot:
         if user_id != self.user_id:
             user_data = self.driver.users.get_user(user_id=user_id)
             username = user_data["username"]
-            self.send_message(channel_id, "hello @"+username)
+            self.send_message(channel_id, "@"+user_id+" "+welcome)
         else:
             self.send_message(channel_id, "Blip Blop, I am a Bot!")
 
